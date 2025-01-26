@@ -27,26 +27,22 @@ pipeline {
 
         stage('Deploy to AWS EC2') {
             steps {
-                script {
-                    // Copy the WAR file to the EC2 instance
-                    sshagent([SSH_KEY]) {
-                        sh """
-                            scp -i ${SSH_KEY} target/webapp.war ${EC2_USER}@${EC2_HOST}:${TOMCAT_HOME}/webapps/
-                        """
-                    }
+                // Copy the WAR file to the EC2 instance
+                    
+                sh """
+                    scp -i ${SSH_KEY} target/webapp.war ${EC2_USER}@${EC2_HOST}:${TOMCAT_HOME}/webapps/
+                """
 
-                    // Restart Tomcat to deploy the new WAR file
-                    // sshagent([SSH_KEY]) {
-                    //     sh """
-                    //         ssh -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_HOST} '${TOMCAT_HOME}/bin/shutdown.sh'
-                    //         ssh -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_HOST} '${TOMCAT_HOME}/bin/startup.sh'
-                    //     """
-                    // }
+                // Restart Tomcat to deploy the new WAR file                   
+                //     sh """
+                //         ssh -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_HOST} '${TOMCAT_HOME}/bin/shutdown.sh'
+                //         ssh -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_HOST} '${TOMCAT_HOME}/bin/startup.sh'
+                //     """
+                    
                 }
             }
         }
-    }
-
+        
     post {
         success {
             echo 'Pipeline completed successfully!'
