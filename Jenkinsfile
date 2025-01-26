@@ -8,7 +8,7 @@ pipeline {
         BRANCH = 'main'
         TOMCAT_HOME = '/opt/tomcat'
         EC2_USER = 'ec2-user'  
-        EC2_HOST = '156.207.43.108'  
+        EC2_HOST = '15.185.34.115'  
         SSH_KEY = '/var/jenkins_home/key/dotnet.pem'  
     }
 
