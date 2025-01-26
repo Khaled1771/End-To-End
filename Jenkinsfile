@@ -27,18 +27,10 @@ pipeline {
 
         stage('Deploy to AWS EC2') {
             steps {
-                // Copy the WAR file to the EC2 instance
-                    
-                sh """
-                    scp -i ${SSH_KEY} target/webapp.war ${EC2_USER}@${EC2_HOST}:${TOMCAT_HOME}/webapps/
-                """
-
-                // Restart Tomcat to deploy the new WAR file                   
-                //     sh """
-                //         ssh -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_HOST} '${TOMCAT_HOME}/bin/shutdown.sh'
-                //         ssh -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_HOST} '${TOMCAT_HOME}/bin/startup.sh'
-                //     """
-                    
+                // Copy the WAR file to the EC2 instance                   
+                    sh """
+                        scp -i ${SSH_KEY} target/webapp.war ${EC2_USER}@${EC2_HOST}:${TOMCAT_HOME}/webapps/
+                    """                   
                 }
             }
         }
