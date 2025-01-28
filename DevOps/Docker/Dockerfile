@@ -1,7 +1,7 @@
 # Pull the official image of Tomcat server
 FROM tomcat:latest
 
-# Fix the permission error  
+# Fix the permission error, Use CATALINA_HOME dir
 RUN cp -R  /usr/local/tomcat/webapps.dist/*  /usr/local/tomcat/webapps
 
 # Deploy your app on Apache-Tomcat container
