@@ -21,7 +21,7 @@
 access tomcat application from browser on port 8080  
  - http://<YOUR_EC2_PUBLIC_IP>:8080
 
-1. now application is accessible on port 8090. but tomcat application doesnt allow to login from browser. changing a default parameter in context.xml does address this issue
+1. now application is accessible on port 8080. but tomcat application doesn't allow to login from browser. changing a default parameter in context.xml does address this issue
    ```sh
    #search for context.xml
    find / -name context.xml
