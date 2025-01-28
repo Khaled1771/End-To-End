@@ -4,6 +4,6 @@ FROM tomcat:latest
 # Fix the permission error  
 RUN cp -R  /usr/local/tomcat/webapps.dist/*  /usr/local/tomcat/webapps
 
-# Depoly your app on Apache-Tomcat container
+# Deploy your app on Apache-Tomcat container
 COPY ./*.war /usr/local/tomcat/webapps
 
