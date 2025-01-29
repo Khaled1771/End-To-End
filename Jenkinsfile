@@ -25,15 +25,29 @@ pipeline {
             }
         }
 
-        stage('Deploy to AWS EC2') {
+        stage("Test..") {
+            steps{
+                sh 'mvn test'
+            }
+        }
+
+        stage("Dockerized") {
+            steps{
+                sh 'cd DevOps/Docker/'
+                sh 'docker build -t tomcat-image .'
+                sh 'docker run -d --name tomcat-cont -p 8888:8080 tomcat-image'
+            }
+        }
+
+       /* stage('Deploy to AWS EC2') {
             steps {
                 // Copy the WAR file to the EC2 instance  --> Note That: SCP Connection needs Permission                 
                     sh """
                         scp -i ${SSH_KEY} target/webapp.war ${EC2_USER}@${EC2_HOST}:${TOMCAT_HOME}/webapps/
                     """                   
                 }
-            }
-        }
+            } */
+    } 
         
     post {
         success {
