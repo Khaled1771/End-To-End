@@ -35,8 +35,8 @@ pipeline {
             steps{
                 sh 'pwd'
                 sh 'ls -l'
-                sh 'cd DevOps/Docker/'
-                sh 'docker build -t tomcat-image .'
+                //sh 'cd DevOps/Docker/'
+                sh 'docker build -t tomcat-image DevOps/Docker/Dockerfile'
                 sh 'docker run -d --name tomcat-cont -p 8888:8080 tomcat-image'
             }
         }
