@@ -10,5 +10,5 @@ COPY context.xml /usr/local/tomcat/webapps/manager/META-INF/context.xml
 COPY tomcat-users.xml /usr/local/tomcat/conf/tomcat-users.xml
 
 # Deploy your app on Apache-Tomcat container
-COPY ./*.war /usr/local/tomcat/webapps
+COPY ./webapp/target/*.war /usr/local/tomcat/webapps
 
