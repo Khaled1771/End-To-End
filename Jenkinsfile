@@ -60,7 +60,13 @@ pipeline {
                 //     }   
                 // }
                 sh "echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin"
-                sh "docker push ${IMAGE_NAME}:${IMAGE_TAG}"
+                //sh "docker push ${IMAGE_NAME}:${IMAGE_TAG}"
+            }
+        }
+
+        stage("Deploy with Ansible") {
+            steps{
+                sh 'ansible-playbook -i DevOps/Ansible/inventory DevOps/Ansible/play-book.yml'
             }
         }
 
