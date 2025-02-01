@@ -12,6 +12,7 @@ pipeline {
         //SSH_KEY = '/var/jenkins_home/key/JavaApp.pem'  
         IMAGE_NAME = 'khaledmahmoud7/java-app'
         IMAGE_TAG = '1.0'
+        DOCKERHUB_CREDENTIALS = withCredentials('dockerhub')
     }
 
     stages {
