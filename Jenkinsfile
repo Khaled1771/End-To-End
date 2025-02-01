@@ -7,9 +7,11 @@ pipeline {
         GIT_REPO = 'https://github.com/Khaled1771/End-To-End-DevOps-Project.git'
         BRANCH = 'main'
         TOMCAT_HOME = '/opt/tomcat'
-        EC2_USER = 'ec2-user'  
-        EC2_HOST = '15.185.34.115'  
-        SSH_KEY = '/var/jenkins_home/key/dotnet.pem'  
+        EC2_USER = 'ubuntu'  
+        //EC2_HOST = '16.24.156.16'  
+        //SSH_KEY = '/var/jenkins_home/key/JavaApp.pem'  
+        IMAGE_NAME = 'khaledmahmoud7/java-app'
+        IMAGE_TAG = '1.0'
     }
 
     stages {
@@ -25,30 +27,40 @@ pipeline {
             }
         }
 
-        stage("Test..") {
+        stage("Test") {
             steps{
                 sh 'mvn test'
             }
         }
 
-        stage("Dockerized") {
+        stage("Dockerized Java-Tomcat") {
             steps{
                 sh 'pwd'
                 sh 'ls -l'
-                //sh 'cd DevOps/Docker/'
-                sh 'docker build -t tomcat-image .'
-                sh 'docker run -d --name tomcat-cont -p 8888:8080 tomcat-image'
+                sh "docker build -t ${IMAGE_NAME:IMAGE_TAG} ."
             }
         }
 
-       /* stage('Deploy to AWS EC2') {
+    stage('Push Docker Image') {
             steps {
-                // Copy the WAR file to the EC2 instance  --> Note That: SCP Connection needs Permission                 
-                    sh """
-                        scp -i ${SSH_KEY} target/webapp.war ${EC2_USER}@${EC2_HOST}:${TOMCAT_HOME}/webapps/
-                    """                   
+                when{
+                        expression{
+                            BRANCH_NAME == 'main'
+                        }
+                    }
+                script {
+                    // Log in to Docker registry (e.g., Docker Hub)
+                    withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
+                   
+                        sh "echo $PASSWORD | docker login -u $USERNAME --password-stdin "
+                          // Push the Docker image
+                        sh "docker push ${IMAGE_NAME}:${IMAGE_TAG}"
+
+                    }   
                 }
-            } */
+            }
+        }
+
     } 
         
     post {
