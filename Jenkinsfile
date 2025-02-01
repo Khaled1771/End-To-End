@@ -12,7 +12,7 @@ pipeline {
         //SSH_KEY = '/var/jenkins_home/key/JavaApp.pem'  
         IMAGE_NAME = 'khaledmahmoud7/java-app'
         IMAGE_TAG = '1.0'
-        DOCKERHUB_CREDENTIALS = withCredentials('dockerhub')
+        DOCKERHUB_CREDENTIALS = credentials('dockerhub')
     }
 
     stages {
@@ -44,21 +44,22 @@ pipeline {
 
     stage('Push Docker Image') {
             steps {
-                when{
-                        expression{
-                            BRANCH_NAME == 'main'
-                        }
-                    }
-                script {
-                    // Log in to Docker registry (e.g., Docker Hub)
-                    withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
+                // when{
+                //         expression{
+                //             BRANCH_NAME == 'main'
+                //         }
+                //     }
+                // script {
+                //     // Log in to Docker registry (e.g., Docker Hub)
+                //     withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
                    
-                        sh "echo $PASSWORD | docker login -u $USERNAME --password-stdin "
-                          // Push the Docker image
-                        sh "docker push ${IMAGE_NAME}:${IMAGE_TAG}"
+                //         sh "echo $PASSWORD | docker login -u $USERNAME --password-stdin "
+                //           // Push the Docker image
+                //         sh "docker push ${IMAGE_NAME}:${IMAGE_TAG}"
 
-                    }   
-                }
+                //     }   
+                // }
+                sh "echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin"
             }
         }
 
