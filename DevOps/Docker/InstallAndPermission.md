@@ -26,7 +26,7 @@
 3. Change Permission
    ```sh
    #Add Your User to the Docker Group
-    sudo usermod -aG docker your_username 
+   sudo usermod -aG docker your_username 
 
    #Verify Docker Group Membership
    groups your_username 
