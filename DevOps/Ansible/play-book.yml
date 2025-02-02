@@ -2,6 +2,9 @@
   hosts: EC2
   remote_user: ubuntu
   become: true
+  vars:
+    docker_image: "{{ docker_image }}"
+    docker_tag: "{{ docker_tag }}"
   tasks:
 
     - name: Update apt package
@@ -9,9 +12,12 @@
         update_cache: yes
 
     - name: Pull Docker image form dockerhub
-      command: docker pull khaledmahmoud7/java-app:1.0
+      command: docker pull "{{ docker_image }}:"{{ docker_tag }}"
+
+    - name: Stop any docker container for Tomcat
+      command: docker rm -f tomcat-container
 
     - name: Run a container on port 8080
-      command: docker run -d --name tomcat-container -p 8080:8080 khaledmahmoud7/java-app:1.0
+      command: docker run -d --name tomcat-container -p 8080:8080 "{{ docker_image }}:"{{ docker_tag }}"
 
 
