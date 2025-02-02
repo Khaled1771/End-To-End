@@ -11,7 +11,7 @@ pipeline {
         //EC2_HOST = '16.24.156.16'  
         //SSH_KEY = '/var/jenkins_home/key/JavaApp.pem'  
         IMAGE_NAME = 'khaledmahmoud7/java-app'
-        IMAGE_TAG = '1.0'
+        IMAGE_TAG = "${env.BUILD_NUMBER}" // Using Jenkins build number as tag
         DOCKERHUB_CREDENTIALS = credentials('dockerhub')
     }
 
@@ -66,7 +66,7 @@ pipeline {
 
         stage("Deploy with Ansible") {
             steps{
-                sh 'ansible-playbook -i DevOps/Ansible/inventory DevOps/Ansible/play-book.yml'
+                sh "ansible-playbook -i inventory play-book.yml --extra-vars 'docker_image=${IMAGE_NAME} docker_tag=${IMAGE_TAG}'"
             }
         }
 
