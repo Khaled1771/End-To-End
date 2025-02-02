@@ -11,13 +11,23 @@
       apt:
         update_cache: yes
 
-    - name: Pull Docker image form dockerhub
-      command: docker pull "{{ docker_image }}:"{{ docker_tag }}"
+    - name: Pull an image
+      community.docker.docker_image:
+        name: "{{ docker_image }}:{{ docker_tag }}"
+        source: pull 
 
     - name: Stop any docker container for Tomcat
-      command: docker rm -f tomcat-container
+      community.docker.docker_container:
+        name: tomcat-container
+        state: absent
+        force_kill: true
 
-    - name: Run a container on port 8080
-      command: docker run -d --name tomcat-container -p 8080:8080 "{{ docker_image }}:"{{ docker_tag }}"
-
+    - name: Run Docker container
+      community.docker.docker_container:
+        name: tomcat-container
+        image: "{{ docker_image }}:{{ docker_tag }}"
+        state: started
+        ports:
+          - "8080:8080"
+        restart_policy: always
 
