@@ -55,7 +55,7 @@ pipeline {
 
         stage("Ansible With Kubernetes") {
             steps{
-                sh "echo Hello"
+                sh "ansible-playbook -i DevOps/Ansible/inventory DevOps/Ansible/kubernetes_deployment.yml"
             }
         }
 
