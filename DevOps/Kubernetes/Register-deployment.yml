@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: register-deployment
+  labels:
+    app: register                 # Label that service will see
+
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: register
+
+  template:
+    metadata:
+      labels:
+        app: register
+
+    spec:
+      containers:
+      - name: tomcat-container
+        image: khaledmahmoud7/java-app:25
+        imagePullPolicy: Always     # Pulling the last image from dockerhub acc
+        ports:
+        - containerPort: 8080       # Port that service will see
+
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
