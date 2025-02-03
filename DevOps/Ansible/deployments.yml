@@ -1,0 +1,105 @@
+# ---
+# - name: Docker Operations
+#   hosts: docker
+#   remote_user: ubuntu
+#   become: true
+#   vars:
+#     docker_image: "{{ docker_image }}"
+#     docker_tag: "{{ docker_tag }}"
+#   tasks:
+
+#     - name: Update apt package
+#       apt:
+#         update_cache: yes
+
+#     - name: Pull an image
+#       community.docker.docker_image:
+#         name: "{{ docker_image }}:{{ docker_tag }}"
+#         source: pull 
+
+#     - name: Stop any docker container for Tomcat
+#       community.docker.docker_container:
+#         name: tomcat-container
+#         state: absent
+#         force_kill: true
+
+#     - name: Run Docker container
+#       community.docker.docker_container:
+#         name: tomcat-container
+#         image: "{{ docker_image }}:{{ docker_tag }}"
+#         state: started
+#         ports:
+#           - "8080:8080"
+#         restart_policy: always
+
+- name: Kubernetes Operations
+  hosts: docker
+  remote_user: ubuntu
+  become: true
+  vars:
+    docker_image: "{{ docker_image }}"
+    docker_tag: "{{ docker_tag }}"
+  tasks:
+
+    - name: Create Kubernetes Deployment Manifest file
+      copy:
+        dest: /tmp/deployment.yml
+        content: |
+          apiVersion: apps/v1
+          kind: Deployment
+          metadata:
+            name: register-deployment
+            labels:
+              app: register                 # Label that service will see
+
+          spec:
+            replicas: 3
+            selector:
+              matchLabels:
+                app: register
+
+            template:
+              metadata:
+                labels:
+                  app: register
+
+              spec:
+                containers:
+                - name: tomcat-container                  
+                  image: "{{ IMAGE_NAME }}:{{ IMAGE_TAG }}"
+                  #imagePullPolicy: Always     # Pulling the last image from dockerhub acc
+                  ports:
+                  - containerPort: 8080       # Port that service will see
+
+            strategy:
+              type: RollingUpdate
+              rollingUpdate:
+                maxSurge: 1
+                maxUnavailable: 1
+
+    - name: Apply Kubernetes Manifest to create the deployment
+      shell: kubectl apply -f /tmp/deployment.yml
+
+    - name: Create Kubernetes Service Manifest file
+      copy:
+        dest: /tmp/service.yml
+        content: |
+          apiVersion: v1
+          kind: Service
+          metadata:
+            name: register-service
+            labels:
+              app: register
+
+          spec:
+            selector:
+              app: register       #Label in deployment
+
+            ports:
+            - port: 8080
+              targetPort: 32000    #ContainerPort in deployment
+
+            type: LoadBalancer
+
+    - name: Apply Kubernetes Manifest to create the LoadBalancer
+      shell: kubectl apply -f /tmp/service.yml
