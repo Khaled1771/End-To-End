@@ -11,6 +11,6 @@
 
     ports:
     - port: 8080
-      nodePort: 32000    #ContainerPort in deployment
+      targetPort: 32000    #ContainerPort in deployment
 
-    type: NodePort
+    type: LoadBalancer
