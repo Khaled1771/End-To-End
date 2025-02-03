@@ -1,0 +1,12 @@
+---
+- name: Kubernetes Operations
+  hosts: docker
+  remote_user: ubuntu
+  become: true
+  tasks:
+
+    - name: Apply Kubernetes Manifest to create the deployment
+      shell: kubectl apply -f /tmp/deployment.yml
+
+    - name: Apply Kubernetes Manifest to create the LoadBalancer
+      shell: kubectl apply -f /tmp/service.yml
