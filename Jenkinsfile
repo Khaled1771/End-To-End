@@ -11,7 +11,8 @@ pipeline {
         //EC2_HOST = '16.24.156.16'  
         //SSH_KEY = '/var/jenkins_home/key/JavaApp.pem'  
         IMAGE_NAME = 'khaledmahmoud7/java-app'
-        IMAGE_TAG = "${env.BUILD_NUMBER}" // Using Jenkins build number as tag
+        IMAGE_TAG = 'latest'
+        //IMAGE_TAG = "${env.BUILD_NUMBER}" // Using Jenkins build number as tag
         DOCKERHUB_CREDENTIALS = credentials('dockerhub')
     }
 
