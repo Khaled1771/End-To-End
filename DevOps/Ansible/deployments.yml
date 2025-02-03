@@ -38,68 +38,68 @@
   become: true
   vars:
     docker_image: "{{ docker_image }}"
-    docker_tag: "{{ docker_tag }}"
+    docker_tag: latest
   tasks:
 
-    - name: Create Kubernetes Deployment Manifest file
-      copy:
-        dest: /tmp/deployment.yml
-        content: |
-          apiVersion: apps/v1
-          kind: Deployment
-          metadata:
-            name: register-deployment
-            labels:
-              app: register                 # Label that service will see
+    # - name: Create Kubernetes Deployment Manifest file
+    #   copy:
+    #     dest: /tmp/deployment.yml
+    #     content: |
+    #       apiVersion: apps/v1
+    #       kind: Deployment
+    #       metadata:
+    #         name: register-deployment
+    #         labels:
+    #           app: register                 # Label that service will see
 
-          spec:
-            replicas: 3
-            selector:
-              matchLabels:
-                app: register
+    #       spec:
+    #         replicas: 3
+    #         selector:
+    #           matchLabels:
+    #             app: register
 
-            template:
-              metadata:
-                labels:
-                  app: register
+    #         template:
+    #           metadata:
+    #             labels:
+    #               app: register
 
-              spec:
-                containers:
-                - name: tomcat-container                  
-                  image: "{{ IMAGE_NAME }}:{{ IMAGE_TAG }}"
-                  #imagePullPolicy: Always     # Pulling the last image from dockerhub acc
-                  ports:
-                  - containerPort: 8080       # Port that service will see
+    #           spec:
+    #             containers:
+    #             - name: tomcat-container                  
+    #               image: "{{ IMAGE_NAME }}:{{ IMAGE_TAG }}"
+    #               #imagePullPolicy: Always     # Pulling the last image from dockerhub acc
+    #               ports:
+    #               - containerPort: 8080       # Port that service will see
 
-            strategy:
-              type: RollingUpdate
-              rollingUpdate:
-                maxSurge: 1
-                maxUnavailable: 1
+    #         strategy:
+    #           type: RollingUpdate
+    #           rollingUpdate:
+    #             maxSurge: 1
+    #             maxUnavailable: 1
 
     - name: Apply Kubernetes Manifest to create the deployment
       shell: kubectl apply -f /tmp/deployment.yml
 
-    - name: Create Kubernetes Service Manifest file
-      copy:
-        dest: /tmp/service.yml
-        content: |
-          apiVersion: v1
-          kind: Service
-          metadata:
-            name: register-service
-            labels:
-              app: register
+    # - name: Create Kubernetes Service Manifest file
+    #   copy:
+    #     dest: /tmp/service.yml
+    #     content: |
+    #       apiVersion: v1
+    #       kind: Service
+    #       metadata:
+    #         name: register-service
+    #         labels:
+    #           app: register
 
-          spec:
-            selector:
-              app: register       #Label in deployment
+    #       spec:
+    #         selector:
+    #           app: register       #Label in deployment
 
-            ports:
-            - port: 8080
-              targetPort: 32000    #ContainerPort in deployment
+    #         ports:
+    #         - port: 8080
+    #           targetPort: 32000    #ContainerPort in deployment
 
-            type: LoadBalancer
+    #         type: LoadBalancer
 
     - name: Apply Kubernetes Manifest to create the LoadBalancer
       shell: kubectl apply -f /tmp/service.yml
