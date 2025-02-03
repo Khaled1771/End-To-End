@@ -1,7 +1,7 @@
 ---
 - name: Kubernetes Operations
   hosts: kubernetes
-  remote_user: ubuntu
+  remote_user: root
   become: true
   tasks:
 
