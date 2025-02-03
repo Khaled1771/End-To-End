@@ -53,11 +53,11 @@ pipeline {
             }
         }
 
-         stage("Ansible With Kubernetes") {
-            steps{
-                sh "ansible-playbook -i DevOps/Ansible/inventory DevOps/Ansible/kubernetes_deployment.yml"
-            }
-        }
+        // stage("Ansible With Kubernetes") {
+        //     steps{
+        //         sh "ansible-playbook -i DevOps/Ansible/inventory DevOps/Ansible/kubernetes_deployment.yml"
+        //     }
+        // }
 
     } 
         
