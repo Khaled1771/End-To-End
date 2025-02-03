@@ -1,3 +1,5 @@
 [docker]
-16.24.156.16 ansible_user=ubuntu ansible_ssh_private_key_file=/var/jenkins_home/AWS/JavaApp.pem
+16.24.156.16 ansible_user=ubuntu ansible_ssh_private_key_file=/mnt/MyData/Courses/AWS/keys/JavaApp.pem
 
+[kubernetes]
+15.184.133.81 ansible_user=root ansible_ssh_private_key_file=/mnt/MyData/Courses/AWS/keys/JavaApp.pem
