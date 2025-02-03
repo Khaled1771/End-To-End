@@ -64,7 +64,7 @@ pipeline {
             }
         }
 
-        stage("Deploy with Ansible") {
+        stage("Ansible With Docker") {
             steps{
                 sh "ansible-playbook -i DevOps/Ansible/inventory DevOps/Ansible/play-book.yml --extra-vars 'docker_image=${IMAGE_NAME} docker_tag=${IMAGE_TAG}'"
             }
