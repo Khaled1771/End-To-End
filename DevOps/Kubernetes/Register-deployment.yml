@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
       - name: tomcat-container
-        image: khaledmahmoud7/java-app:25
+        image: khaledmahmoud7/java-app
         imagePullPolicy: Always     # Pulling the last image from dockerhub acc
         ports:
         - containerPort: 8080       # Port that service will see
