@@ -5,6 +5,11 @@ You can follow same procedure in the official  AWS document [Getting started wit
 #### Pre-requisites: 
   - an EC2 Instance 
   - Install AWS-CLI latest verison 
+  ```sh
+  curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+  unzip awscliv2.zip
+  ```
+
 
 1. Setup kubectl   
    1.1 Download kubectl version 1.21  
